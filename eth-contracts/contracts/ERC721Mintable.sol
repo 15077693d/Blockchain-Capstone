@@ -271,7 +271,7 @@ contract ERC721 is Pausable, ERC165 {
         Counters.increment(_ownedTokensCount[to]);
         Counters.decrement(_ownedTokensCount[from]);
         _tokenOwner[tokenId] = to;
-        // TODO: emit correct event
+        // ok TODO: emit correct event
          emit Transfer(from, to, tokenId);
     }
 
@@ -520,18 +520,20 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     }
 
 
-    // TODO: Create an internal function to set the tokenURI of a specified tokenId
+    // ok TODO: Create an internal function to set the tokenURI of a specified tokenId
     // It should be the _baseTokenURI + the tokenId in string form
     // TIP #1: use strConcat() from the imported oraclizeAPI lib to set the complete token URI
     // TIP #2: you can also use uint2str() to convert a uint to a string
         // see https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol for strConcat()
     // require the token exists before setting
-    function setBaseTokenURI(uint256 tokenId) internal {
-
+    function setTokenURI(uint256 tokenId) internal {
+        require(_exists(tokenId), "tokenId not exists");
+        string memory stringTokenId = uint2str(tokenId);
+        strConcat(_baseTokenURI, stringTokenId);
     }
 }
 
-//  TODO's: Create CustomERC721Token contract that inherits from the ERC721Metadata contract. You can name this contract as you please
+// ok TODO's: Create CustomERC721Token contract that inherits from the ERC721Metadata contract. You can name this contract as you please
 //  1) Pass in appropriate values for the inherited ERC721Metadata contract
 //      - make the base token uri: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/
 //  2) create a public mint() that does the following:
@@ -539,6 +541,12 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -takes in a 'to' address, tokenId, and tokenURI as parameters
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
-
+contract Siu4 is ERC721Metadata("siu4coin","siu4","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
+    function mint(address to, uint256 tokenId, string tokenURI) public onlyOwner returns(bool){
+        setTokenURI(tokenId);
+        _mint(to, tokenId);
+        return true;
+    }
+}
 
 
