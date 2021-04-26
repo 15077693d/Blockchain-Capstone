@@ -1,4 +1,4 @@
-var ERC721MintableComplete = artifacts.require('ERC721MintableComplete');
+var ERC721MintableComplete = artifacts.require('Siu4');
 
 contract('TestERC721Mintable', accounts => {
 

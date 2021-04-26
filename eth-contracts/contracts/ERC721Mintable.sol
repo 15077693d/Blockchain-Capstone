@@ -113,7 +113,7 @@ contract ERC165 is Ownable{
     }
 }
 
-contract ERC721 is Pausable, ERC165 {
+contract ERC721 is  ERC165 {
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
@@ -163,13 +163,13 @@ contract ERC721 is Pausable, ERC165 {
     }
 
 //    @dev Approves another address to transfer the given token ID
-    function approve(address to, uint256 tokenId) public {
+    function approve(address to, uint256 tokenId) public onlyOwner {
         
         // ok TODO require the given address to not be the owner of the tokenId
         require(to!=_tokenOwner[tokenId]," the given address to not be the owner of the tokenId");
 
         // ok TODO require the msg sender to be the owner of the contract or isApprovedForAll() to be true
-        require(msg.sender == _owner || isApprovedForAll(msg.sender, to) == true, "the msg sender to be the owner of the contract or isApprovedForAll() to be true");
+        require(isApprovedForAll(msg.sender, to) == true, "the msg sender to be the owner of the contract or isApprovedForAll() to be true");
 
         // ok TODO add 'to' address to token approvals
         _tokenApprovals[tokenId] = to;
@@ -264,7 +264,7 @@ contract ERC721 is Pausable, ERC165 {
         // ok TODO: require from address is the owner of the given token
         require(from == _tokenOwner[tokenId], "from address is not the owner of the given token");
         // ok TODO: require token is being transfered to valid address
-        require(to == tokenApprovals[tokenId], "given address is invalid");
+        require(to == _tokenApprovals[tokenId], "given address is invalid");
         // ok TODO: clear approval
         delete _tokenApprovals[tokenId];
         // ok TODO: update token counts & transfer ownership of the token ID 
@@ -502,15 +502,15 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     }
 
     // ok TODO: create external getter functions for name, symbol, and baseTokenURI
-    function getName() external view returns(string){
+    function getName() external view returns(string memory){
         return _name;
     }
 
-     function getSymbol() external view returns(string){
+     function getSymbol() external view returns(string memory){
         return _symbol;
     }
 
-     function getBaseTokenURI() external view returns(string){
+     function getBaseTokenURI() external view returns(string memory){
         return _baseTokenURI;
     }
 
@@ -542,7 +542,7 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
 contract Siu4 is ERC721Metadata("siu4coin","siu4","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
-    function mint(address to, uint256 tokenId, string tokenURI) public onlyOwner returns(bool){
+    function mint(address to, uint256 tokenId, string memory tokenURI) public onlyOwner returns(bool){
         setTokenURI(tokenId);
         _mint(to, tokenId);
         return true;
