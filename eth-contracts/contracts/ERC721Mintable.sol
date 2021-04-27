@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.5.0;
 
 import 'openzeppelin-solidity/contracts/utils/Address.sol';
 import 'openzeppelin-solidity/contracts/drafts/Counters.sol';
@@ -539,7 +539,7 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -takes in a 'to' address, tokenId as parameters
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
-contract Siu4 is ERC721Metadata("siu4coin","siu4","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
+contract RealEstate is ERC721Metadata("RealEstate","RE","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
     function mint(address to, uint256 tokenId) public onlyOwner returns(bool){
         _mint(to, tokenId);
         setTokenURI(tokenId);
