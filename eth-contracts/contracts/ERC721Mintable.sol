@@ -511,7 +511,7 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
         return _baseTokenURI;
     }
 
-    function tokenURI(uint256 tokenId) external view returns (string memory) {
+    function getTokenURI(uint256 tokenId) external view returns (string memory) {
         require(_exists(tokenId));
         return _tokenURIs[tokenId];
     }
@@ -526,7 +526,7 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     function setTokenURI(uint256 tokenId) internal {
         require(_exists(tokenId), "tokenId not exists");
         string memory stringTokenId = uint2str(tokenId);
-        strConcat(_baseTokenURI, stringTokenId);
+        _tokenURIs[tokenId] = strConcat(_baseTokenURI, stringTokenId);
     }
 }
 
@@ -535,13 +535,13 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      - make the base token uri: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/
 //  2) create a public mint() that does the following:
 //      -can only be executed by the contract owner
-//      -takes in a 'to' address, tokenId, and tokenURI as parameters
+//      -takes in a 'to' address, tokenId as parameters
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
 contract Siu4 is ERC721Metadata("siu4coin","siu4","https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"){
-    function mint(address to, uint256 tokenId, string memory tokenURI) public onlyOwner returns(bool){
-        setTokenURI(tokenId);
+    function mint(address to, uint256 tokenId) public onlyOwner returns(bool){
         _mint(to, tokenId);
+        setTokenURI(tokenId);
         return true;
     }
 }
