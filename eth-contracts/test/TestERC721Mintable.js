@@ -8,9 +8,9 @@ contract('TestERC721Mintable', accounts => {
 
             // TODO: mint multiple tokens
             for (let i=0; i<5;i++){
-                this.contract.mint(accounts[i], i)
+               await  this.contract.mint(accounts[i], i,{from: accounts[0]})
             }
-            this.contract.mint(accounts[0], 5)
+           await  this.contract.mint(accounts[0], 5,{from: accounts[0]})
         })
 
         it('should return total supply', async function () { 
@@ -30,7 +30,7 @@ contract('TestERC721Mintable', accounts => {
         })
 
         it('should transfer token from one owner to another', async function () { 
-            await this.contract.approve(accounts[0],2,{from:accounts[0]})
+            await this.contract.approve(accounts[0],2,{from:accounts[2]})
             await this.contract.transferFrom(accounts[2], accounts[0], 2,{from:accounts[2]})
             const actual = await this.contract.balanceOf(accounts[0])
             assert.equal(actual.toNumber(), 3)
@@ -43,11 +43,18 @@ contract('TestERC721Mintable', accounts => {
         })
 
         it('should fail when minting when address is not contract owner', async function () { 
-            
+            let flag = false
+            try {
+                await this.contract.mint(accounts[0], 6,{from: accounts[1]})
+            } catch (error) {
+                flag = true
+            }
+            assert.equal(flag, true)
         })
 
         it('should return contract owner', async function () { 
-            
+            const actual = await this.contract.getOwner.call()
+            assert.equal(actual, accounts[0])
         })
 
     });
