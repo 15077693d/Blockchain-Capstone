@@ -18,12 +18,12 @@ contract Ownable {
     event OwershipTransfer(address newOwner);
 
     modifier onlyOwner {
-        require(msg.sender == _owner);
+        require(msg.sender == _owner, "Can only be called by owner");
         _;
     }
 
-    constructor ( address owner) internal {
-        _owner = owner;
+    constructor ( ) internal {
+        _owner = msg.sender;
         emit OwershipTransfer(_owner);
     }
 
@@ -34,7 +34,8 @@ contract Ownable {
     function transferOwnership(address newOwner) public onlyOwner {
         // ok TODO add functionality to transfer control of the contract to a newOwner.
         // ok make sure the new owner is a real address
-        require(msg.sender == tx.origin);
+        require(msg.sender == tx.origin,  "Invalid Address (not user)");
+        require(newOwner != address(0), "Invalid Address (empty)"); 
         _owner = newOwner;
         emit OwershipTransfer(_owner);
     }
@@ -46,37 +47,34 @@ contract Ownable {
 //  ok 3) create an internal constructor that sets the _paused variable to false
 //  ok 4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
 //  ok 5) create a Paused & Unpaused event that emits the address that triggered the event
-
-contract ERC165 is Ownable{
+contract Pausable is Ownable {
+    //  1) create a private '_paused' variable of type bool
     bool private _paused;
-    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
-
-    /**
-    *  modifieres 
-    */
-    modifier whenNotPaused{
-        require(_paused==false);
+    //  2) create a public setter using the inherited onlyOwner modifier
+    function setPaused(bool paused) public onlyOwner{
+        _paused = paused;
+        if (_paused==true) emit Paused(msg.sender);
+        if(_paused==false) emit Unpaused(msg.sender);
+    }
+    //  3) create an internal constructor that sets the _paused variable to false
+    constructor () internal {
+        _paused = false;
+    }
+    //  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
+    modifier whenNotPaused(){
+        require(_paused==false, "Contract is paused");
         _;
     }
-
-     modifier paused{
-        require(_paused==true);
+    modifier paused(){
+        require(_paused==true, "Contract is not paused");
         _;
     }
-
-    
-    /**
-    *  events 
-    */
+    //  5) create a Paused & Unpaused event that emits the address that triggered the event
     event Paused(address sender);
     event Unpaused(address sender);
-
-    /**
-    * create a public setter using the inherited onlyOwner modifier 
-    */
-    function setPaused(bool paused) onlyOwner public {
-        _paused = paused;
-    }
+}
+contract ERC165{
+    bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
 
     /*
      * 0x01ffc9a7 ===
@@ -94,7 +92,6 @@ contract ERC165 is Ownable{
      */
     constructor () internal {
         _registerInterface(_INTERFACE_ID_ERC165);
-        _paused = false;
     }
 
     /**
@@ -113,7 +110,7 @@ contract ERC165 is Ownable{
     }
 }
 
-contract ERC721 is  ERC165 {
+contract ERC721 is Pausable,  ERC165 {
 
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
@@ -175,7 +172,7 @@ contract ERC721 is  ERC165 {
         _tokenApprovals[tokenId] = to;
 
         // ok TODO emit Approval Event
-        emit Approval(msg.sender, to, tokenId);
+        emit Approval(to, msg.sender, tokenId);
 
     }
 
