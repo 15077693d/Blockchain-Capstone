@@ -31,10 +31,15 @@ zokrates export-verifier
 ![alt text](http://url/to/img.png)
 ![alt text](http://url/to/img.png)
 
-## Contract
+## Contract Abi's
+```
+./eth-contracts/build/contracts
+```
+
+## Contract Addresses
 https://rinkeby.etherscan.io/address/0x6e19e385b50b6893dad0e0f7241859773f384d2d
 
-## Marketplace
+## OpenSea MarketPlace Storefront links
 https://testnets.opensea.io/collection/unidentified-contract-fk8mbwnvxs
 
 # Project Resources
