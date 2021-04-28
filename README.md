@@ -27,9 +27,9 @@ zokrates export-verifier
 ```
 
 ## Deployment
-![alt text](http://url/to/img.png)
-![alt text](http://url/to/img.png)
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/15077693d/Blockchain-Capstone/blob/master/images/RE-deployment.png?raw=true)
+![alt text](https://github.com/15077693d/Blockchain-Capstone/blob/master/images/SSV-deployment.png?raw=true)
+![alt text](https://github.com/15077693d/Blockchain-Capstone/blob/master/images/SV-deployment.png?raw=true)
 
 ## Contract Abi's
 ```
