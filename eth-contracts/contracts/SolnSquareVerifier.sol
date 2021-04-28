@@ -34,9 +34,9 @@ contract SolnSquareVerifier is RealEstate{
 
 // TODO Create a function to add the solutions to the array and emit the event
     function addSolution(address _to, uint256 _tokenId, bytes32 _key) public {
-        Solutions _solution = Solutions(_tokenId, _to);
+        Solutions memory _solution = Solutions(_tokenId, _to);
         solutionsArray.push(_solution);
-        solutionsMapping[_key] = solution;
+        solutionsMapping[_key] = _solution;
         emit SolutionAdded(_tokenId, _to);
     }
 
@@ -53,7 +53,7 @@ contract SolnSquareVerifier is RealEstate{
         require(solutionsMapping[key].to == address(0),"Solution is already used.");
         require(squareContract.verifyTx(a,b,c,input),"Solution is not correct");
 
-        AddSolution(_to,_tokenId,key);
+        addSolution(_to,_tokenId,key);
         mint(_to,_tokenId);
     }
 
@@ -67,7 +67,7 @@ contract SolnSquareVerifier is RealEstate{
         bytes32 key = keccak256(abi.encodePacked(a,b,c,input));
         require(solutionsMapping[key].to == address(0),"Solution is already used.");
 
-        AddSolution(_to,_tokenId,key);
+        addSolution(_to,_tokenId,key);
     }
   
 }
