@@ -26,6 +26,17 @@ zokrates generate-proof
 zokrates export-verifier
 ```
 
+## Deployment
+![alt text](http://url/to/img.png)
+![alt text](http://url/to/img.png)
+![alt text](http://url/to/img.png)
+
+## Contract
+https://rinkeby.etherscan.io/address/0x6e19e385b50b6893dad0e0f7241859773f384d2d
+
+## Marketplace
+https://testnets.opensea.io/collection/unidentified-contract-fk8mbwnvxs
+
 # Project Resources
 
 * [Remix - Solidity IDE](https://remix.ethereum.org/)
