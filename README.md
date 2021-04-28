@@ -14,6 +14,7 @@ ganache-cli
 cd eth-contracts
 truffle test
 ```
+
 ## ZoKrates
 ```
 docker run -v <path of project>:/home/zokrates/code -ti zokrates/zokrates /bin/bash
